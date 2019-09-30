@@ -4,7 +4,7 @@
 class zfs_nas::params {
 
   $zfs_package = $facts['os']['name'] ? {
-    'Ubuntu' => 'zfs-utils',
+    'Ubuntu' => 'zfsutils-linux',
     'CentOS' => 'zfs'
   }
 
