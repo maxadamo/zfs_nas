@@ -32,7 +32,7 @@ class zfs_nas::config (
   file { '/etc/modprobe.d/zfs':
     content => "install zfs\n",
     notify  => Exec['modprobe_zfs'],
-    require => Package['zfs'];
+    require => Package[$zfs_package];
   }
 
   exec { 'modprobe_zfs':
