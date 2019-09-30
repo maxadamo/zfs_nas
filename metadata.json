@@ -1,0 +1,69 @@
+{
+  "name": "maxadamo-zfs_nas",
+  "version": "0.1.0",
+  "author": "Massimiliano Adamo <maxadamo@gmail.com>",
+  "summary": "ZFS HA NAS: a Highly-Avalaible NAS Appliance",
+  "license": "GPL-3.0",
+  "source": "https://github.com/maxadamo/zfs_nas",
+  "dependencies": [
+    {
+      "name": "derdanne-nfs",
+      "version_requirement": ">= 2.0.8 <= 2.1.2"
+    },
+    {
+      "name": "puppetlabs-firewall",
+      "version_requirement": ">= 1.9.0 <= 2.0.0"
+    },
+    {
+      "name": "puppetlabs-zfs_core",
+      "version_requirement": ">= 1.0.0 <= 1.0.2"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "9"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "18.04"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.10.0 < 7.0.0"
+    }
+  ],
+  "pdk-version": "1.13.0",
+  "template-url": "pdk-default#1.13.0",
+  "template-ref": "1.13.0-0-g66e1443"
+}
