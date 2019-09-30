@@ -34,8 +34,7 @@ class zfs_nas::config () {
   exec { 'modprobe_zfs':
     command     => 'modprobe zfs',
     path        => '/usr/bin:/usr/sbin:/bin:/sbin',
-    refreshonly => true,
-    before      => Zpool['repositories'];
+    refreshonly => true;
   }
 
 }
