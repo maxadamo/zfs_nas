@@ -10,7 +10,7 @@ class zfs_nas::config (
     nfs_v4         => false;
   }
 
-  if $facts['os']['family'] == 'Debian' {
+  if $facts['os']['family'] == 'RedHat' {
     file_line {
       default:
         ensure  => present,
