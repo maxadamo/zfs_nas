@@ -1,9 +1,7 @@
 # == Class: zfs_nas::config
 #
 #
-class zfs_nas::config (
-  $pool_disk
-) {
+class zfs_nas::config () {
 
   class { 'nfs':
     server_enabled => true,
