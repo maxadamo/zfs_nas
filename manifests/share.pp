@@ -2,24 +2,18 @@
 #
 #
 define zfs_nas::share (
-  $pool_disk,
-  $pool_name,
+  $ensure,
+  $zpool_name,
+  $client_list,
+  $share_name = $name,
 ) {
 
-# my_fancy_pool:
-#   my_fancy_share:
-#     mount_point: /var/blahbla
-#     share_properties: 'ro@83.97.92.0/22,sec=sys'
+  $client_string = join($client_list, ',')
 
-  zpool { $pool_name:
-    disk    => $pool_disk,
-    require => Exec['modprobe_zfs'];
-  }
-
-  zfs { 'repositories/pub':
-    ensure     => present,
-    mountpoint => '/var/repositories/pub',
-    sharenfs   => 'ro=@83.97.92.0/22,sec=sys',
+  zfs { "${zpool_name}/${share_name}":
+    ensure     => $ensure,
+    mountpoint => "/zfs/${zpool_name}/${share_name}",
+    sharenfs   => $client_string,
     require    => Class['nfs'];
   }
 
