@@ -61,7 +61,6 @@ class zfs_nas (
     }
     zfs_nas::share { $share:
       ensure      => $ensure,
-      zpool_name  => $zfs_shares[$share]['zpool_name'],
       client_list => $client_list;
     }
   }
