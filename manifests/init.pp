@@ -48,7 +48,7 @@ class zfs_nas (
 
   keys($zfs_shares).each | $share | {
     # if ensure is not used default is present
-    unless has_key($zfs_shares[$share]['ensure']) {
+    unless has_key($zfs_shares[$share], 'ensure') {
       $ensure = present
     } else {
       $ensure = $zfs_shares[$share]['ensure']
