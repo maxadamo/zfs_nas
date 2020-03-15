@@ -57,7 +57,7 @@ class zfs_nas (
     if $zfs_shares[$share]['client_list'] in $zfs_shares {
       $client_list = $zfs_shares[$share]['client_list']
     } else {
-      $client_list = undef
+      fail("${zfs_shares} ${share} is missing a client_list array")
     }
     zfs_nas::share { $share:
       ensure      => $ensure,
