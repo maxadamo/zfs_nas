@@ -4,6 +4,13 @@
 #
 # https://serverfault.com/a/842740/312669
 #
+# == Repositories:
+#
+# repositories are only needed on CentOS.
+# The repository and the GPG key are handled through the package provided by zfsonlinux
+# if you have yumrepo and it set to purge unmanaged repositories,
+# please, set manage_repo to false and create the repository yourself
+#
 class zfs_nas (
   Array $nodes_hostnames,
   Array $nodes_ip4,
@@ -12,15 +19,30 @@ class zfs_nas (
   Optional[Stdlib::IP::Address::V6::Nosubnet] $vip_ip6,
   Integer[0, 30] $vip_ip4_subnet,
   Optional[Integer[0, 128]] $vip_ip6_subnet,
-  Hash $zfs_pools,
+  Variant[String, Array] $pool_disks,
+  Optional[Array] $mirrors, # place holder
   Hash $zfs_shares,
-  String $network_interface = 'eth0'
+  String $network_interface = 'eth0',
+  Boolean $manage_firewall = true,
+  Boolean $manage_repo = true,
+  Optional[String] $repo_proxy_host = undef,
+  Optional[Integer[1, 65535]] $repo_proxy_port = undef
 ) inherits zfs_nas::params {
 
   include zfs_nas::config
 
-  keys($zfs_pools).each | $pool | {
-    zfs_nas::pool { $pool: pool_disk => $zfs_pools[$pool]['device']; }
+  if ($manage_repo) {
+    if $facts['lsbdistid'] == 'CentOS' {
+      class { 'zfs_nas::repositories':
+        repo_proxy_host => $repo_proxy_host,
+        repo_proxy_port => $repo_proxy_port
+    }
+  }
+
+  # we handle only one default pool (I see no reason to make it customizable)
+  zpool { 'zfs_nas':
+    disk    => $pool_disk,
+    require => Exec['modprobe_zfs'];
   }
 
   keys($zfs_shares).each | $share | {
