@@ -57,7 +57,7 @@ class zfs_nas (
     if $zfs_shares[$share]['client_list'] in $zfs_shares {
       $client_list = $zfs_shares[$share]['client_list']
     } else {
-      $client_list = 'on'
+      $client_list = undef
     }
     zfs_nas::share { $share:
       ensure      => $ensure,
