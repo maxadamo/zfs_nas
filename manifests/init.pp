@@ -42,7 +42,7 @@ class zfs_nas (
 
   # we handle only one default pool (I see no reason to make it customizable)
   zpool { 'zfs_nas':
-    disk    => $pool_disk,
+    disk    => $pool_disks,
     require => Exec['modprobe_zfs'];
   }
 
