@@ -9,7 +9,7 @@ define zfs_nas::share (
 
   $client_string = join($client_list, ',')
 
-  zfs { "/zfs_nas/${share_name}":
+  zfs { "zfs_nas/${share_name}":
     ensure     => $ensure,
     mountpoint => "/zfs_nas/${share_name}",
     sharenfs   => $client_string,
