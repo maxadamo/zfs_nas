@@ -36,6 +36,7 @@ class zfs_nas (
       class { 'zfs_nas::repositories':
         repo_proxy_host => $repo_proxy_host,
         repo_proxy_port => $repo_proxy_port
+      }
     }
   }
 
@@ -74,6 +75,7 @@ class zfs_nas (
   } elsif ($vip_ip6_subnet) and !($vip_ip6) {
     fail('$vip_ip6_subnet is set but $vip_ip6 is not set')
   }
+
   if ($vip_ip6) {
     class { 'tiny_nas::keepalived':
       network_interface => $network_interface,
