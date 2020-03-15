@@ -54,7 +54,7 @@ class zfs_nas (
       $ensure = $zfs_shares[$share]['ensure']
     }
     # if there is IPv6 and client_list, then client_list must have ipv6
-    if $zfs_shares[$share]['client_list'] in $zfs_shares {
+    if has_key($zfs_shares[$share], 'client_list') {
       $client_list = $zfs_shares[$share]['client_list']
     } else {
       fail("${zfs_shares} ${share} is missing a client_list array")
