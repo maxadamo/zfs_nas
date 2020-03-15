@@ -20,13 +20,13 @@ class zfs_nas (
   Integer[0, 30] $vip_ip4_subnet,
   Optional[Integer[0, 128]] $vip_ip6_subnet,
   Variant[String, Array] $pool_disks,
-  Optional[Array] $mirrors, # place holder
   Hash $zfs_shares,
   String $network_interface = 'eth0',
   Boolean $manage_firewall = true,
   Boolean $manage_repo = true,
   Optional[String] $repo_proxy_host = undef,
-  Optional[Integer[1, 65535]] $repo_proxy_port = undef
+  Optional[Integer[1, 65535]] $repo_proxy_port = undef,
+  Optional[Array] $mirrors = undef, # place holder
 ) inherits zfs_nas::params {
 
   include zfs_nas::config
