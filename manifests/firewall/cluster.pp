@@ -11,7 +11,7 @@ class zfs_nas::firewall::cluster (
   $peer_ip = delete($nodes_ip4, $::ipaddress)
 
   $nodes_ips.each | String $node_ip | {
-    if $node_ip =~ Stdlib::IP::Address::V6 { $provider = 'ip6tables' } else { $node_ip = 'iptables' }
+    if $node_ip =~ Stdlib::IP::Address::V6 { $provider = 'ip6tables' } else { $provider = 'iptables' }
     firewall {
       "200 allow inbound UDP to port 111, 892, 2049, 4045 from ${node_ip} for provider ${provider}":
         chain    => 'INPUT',
