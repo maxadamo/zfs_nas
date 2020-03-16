@@ -1,6 +1,8 @@
-# == Class: zfs_nas::firewall::keepalived
+# == Class: zfs_nas::firewall::cluster
 #
-class zfs_nas::firewall::keepalived (
+# WE STILL MISS SYNCOID PORTS
+#
+class zfs_nas::firewall::cluster (
   $nodes_ip4,
   $nodes_ip6 = []
 ) {
@@ -17,14 +19,14 @@ class zfs_nas::firewall::keepalived (
         source   => $node_ip,
         provider => $provider,
         proto    => udp,
-        dport    => [333, 444];
+        dport    => [111, 892, 2049, 4045];
       "200 allow inbound TCP to port 111, 892, 2049, 4045 from ${node_ip} for provider ${provider}":
         chain    => 'INPUT',
         action   => accept,
         source   => $node_ip,
         provider => $provider,
         proto    => tcp,
-        dport    => [333, 444];
+        dport    => [111, 892, 2049, 4045];
     }
   }
 

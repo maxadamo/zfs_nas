@@ -88,4 +88,14 @@ class zfs_nas (
     }
   }
 
+  class {
+    'zfs_nas::firewall::cluster':
+      nodes_ip4 => $nodes_ip4,
+      nodes_ip6 => $nodes_ip6;
+    'zfs_nas::firewall::nfs':
+      zfs_shares => $zfs_shares,
+      nodes_ip4  => $nodes_ip4,
+      nodes_ip6  => $nodes_ip6;
+  }
+
 }
