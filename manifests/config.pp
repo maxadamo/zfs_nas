@@ -35,8 +35,8 @@ class zfs_nas::config (
       notify  => Exec['modprobe_zfs'],
       require => Package[$zfs_package];
     '/etc/cron.d/zfs-auto-snapshot':
-      notify => Exec["restart_cron_${module_name}"],
-      source => "puppet:///modules/${module_name}/zfs-auto-snapshot",
+      notify  => Exec["restart_cron_${module_name}"],
+      source  => "puppet:///modules/${module_name}/zfs-auto-snapshot",
       require => Package[$zfs_package];
   }
 
