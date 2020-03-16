@@ -19,7 +19,7 @@ define zfs_nas::share (
   }
 
   monit::check { "syncoid_${share_name}":
-    content => "check program storagesync with path /usr/local/bin/run_storagesync_${share_name}.sh
+    content => "check program storagesync with path /usr/local/bin/syncoid_${share_name}.sh
     every 1 cycles
     if status != 0 then alert\n";
   }
