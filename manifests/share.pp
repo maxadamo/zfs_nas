@@ -24,10 +24,11 @@ define zfs_nas::share (
     if status != 0 then alert\n";
   }
 
-  file { "/usr/local/bin/run_storagesync_${share_name}.sh":
+  file { "/usr/local/bin/syncoid_${share_name}.sh":
     ensure  => present,
-    content => "ip add sh | grep -q secondary && exit 0
-syncoid root@${peer_host}:zfs_nas/${share_name} zfs_nas/${share_name}\n";
+    content => "PATH=\"/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin\"
+ip add sh | grep -q secondary && exit 0
+flock /tmp/syncoid_${share_name} syncoid root@${peer_host}:zfs_nas/${share_name} zfs_nas/${share_name}\n";
   }
 
 }
