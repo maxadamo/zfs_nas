@@ -17,8 +17,8 @@ class zfs_nas::firewall::nfs (
   #rw=@83.97.93.24,sec=insecure,async,no_root_squash,no_subtree_checkrw=83.97.93.25,
 
   #echo { "clients_array: ${clients_array}":; }
-  echo { "joined_array: ${joined_array}":; }
-  #echo { "cleaned_array: ${cleaned_array}":; }
+  #echo { "joined_array: ${joined_array}":; }
+  echo { "cleaned_array: ${cleaned_array}":; }
   #echo { "ip_array: ${ip_array}":; }
 
   $nodes_ips = concat($nodes_ip4, $nodes_ip6)
