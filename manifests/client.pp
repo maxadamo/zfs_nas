@@ -39,8 +39,8 @@ define zfs_nas::client (
 ) {
 
   if any2bool($manage_firewall) == true {
-    unless defined(Class['::tiny_nas::client::firewall']) {
-      class { '::tiny_nas::client::firewall':
+    unless defined(Class['::zfs_nas::client::firewall']) {
+      class { '::zfs_nas::client::firewall':
         ipv6_enabled => $ipv6_enabled;
       }
     }
@@ -57,7 +57,7 @@ define zfs_nas::client (
   $stripped_mount_point = regsubst($mount_point, '/', '_', 'G')
   $script_name = "/usr/local/sbin/fix_stale_mount${stripped_mount_point}.sh"
 
-  tiny_nas::client::client { $mount_point:
+  zfs_nas::client::client { $mount_point:
     ensure               => $client_ensure,
     stripped_mount_point => $stripped_mount_point,
     script_name          => $script_name,

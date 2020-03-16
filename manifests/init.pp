@@ -76,7 +76,7 @@ class zfs_nas (
   }
 
   if ($vip_ip6) {
-    class { 'tiny_nas::keepalived':
+    class { 'zfs_nas::keepalived':
       network_interface => $network_interface,
       nodes_hostnames   => $nodes_hostnames,
       nodes_ip4         => $nodes_ip4,
