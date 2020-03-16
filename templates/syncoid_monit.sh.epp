@@ -1,5 +1,5 @@
 #!/bin/bash
-PATH=\"/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin\"
+PATH="/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
 ip add sh | grep -q secondary && exit 0
 
 flock /tmp/syncoid_<%= $share_name %> syncoid root@<%= $peer_host %>:zfs_nas/<%= $share_name %> zfs_nas/<%= $share_name %>
