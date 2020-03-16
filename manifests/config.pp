@@ -29,16 +29,24 @@ class zfs_nas::config (
 
   package { $zfs_package: ensure  => installed; }
 
-  file { '/etc/modprobe.d/zfs':
-    content => "install zfs\n",
-    notify  => Exec['modprobe_zfs'],
-    require => Package[$zfs_package];
+  file {
+    '/etc/modprobe.d/zfs':
+      content => "install zfs\n",
+      notify  => Exec['modprobe_zfs'],
+      require => Package[$zfs_package];
+    '/etc/cron.d/zfs-auto-snapshot':
+      notify => Exec["restart_cron_${module_name}"],
+      source => "puppet:///modules/${module_name}/zfs-auto-snapshot";
   }
 
-  exec { 'modprobe_zfs':
-    command     => 'modprobe zfs',
-    path        => '/usr/bin:/usr/sbin:/bin:/sbin',
-    refreshonly => true;
+  exec {
+    default:
+      path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+      refreshonly => true;
+    'modprobe_zfs':
+      command     => 'modprobe zfs';
+    "restart_cron_${module_name}":
+      command     => 'systemctl restart cron.service';
   }
 
 }
