@@ -60,8 +60,9 @@ class zfs_nas (
       fail("${zfs_shares} ${share} is missing a client_list array")
     }
     zfs_nas::share { $share:
-      ensure      => $ensure,
-      client_list => $client_list;
+      ensure          => $ensure,
+      nodes_hostnames => $nodes_hostnames,
+      client_list     => $client_list;
     }
   }
 
