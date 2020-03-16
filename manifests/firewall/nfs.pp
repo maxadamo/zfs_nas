@@ -9,13 +9,17 @@ class zfs_nas::firewall::nfs (
   # create an array with all the clients IPs
   $clients_array = $zfs_shares.map |$items, $values| { $values['client_list'] }
   $joined_array = join($clients_array)
+  $cleaned_array = regsubst($joined_array, /\((.+?)\)/, 'SEP', 'G')
   $cleaned_array = regsubst($joined_array, /rw=(.+?)\,/, 'SEP', 'G')
+
   $ip_array = split($cleaned_array, 'SEP')
 
+  #rw=@83.97.93.24,sec=insecure,async,no_root_squash,no_subtree_checkrw=83.97.93.25,
+
   #echo { "clients_array: ${clients_array}":; }
-  #echo { "joined_array: ${joined_array}":; }
-  echo { "cleaned_array: ${cleaned_array}":; }
-  echo { "ip_array: ${ip_array}":; }
+  echo { "joined_array: ${joined_array}":; }
+  #echo { "cleaned_array: ${cleaned_array}":; }
+  #echo { "ip_array: ${ip_array}":; }
 
   $nodes_ips = concat($nodes_ip4, $nodes_ip6)
   $peer_ip = delete($nodes_ip4, $::ipaddress)
