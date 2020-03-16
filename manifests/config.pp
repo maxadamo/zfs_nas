@@ -36,7 +36,8 @@ class zfs_nas::config (
       require => Package[$zfs_package];
     '/etc/cron.d/zfs-auto-snapshot':
       notify => Exec["restart_cron_${module_name}"],
-      source => "puppet:///modules/${module_name}/zfs-auto-snapshot";
+      source => "puppet:///modules/${module_name}/zfs-auto-snapshot",
+      require => Package[$zfs_package];
   }
 
   exec {
