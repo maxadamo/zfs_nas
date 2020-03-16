@@ -26,9 +26,13 @@ define zfs_nas::share (
 
   file { "/usr/local/bin/syncoid_${share_name}.sh":
     ensure  => present,
-    content => "PATH=\"/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin\"
-ip add sh | grep -q secondary && exit 0
-flock /tmp/syncoid_${share_name} syncoid root@${peer_host}:zfs_nas/${share_name} zfs_nas/${share_name}\n";
+    mode    => '0755',
+    owner   => root,
+    group   => root,
+    content => epp("${module_name}/syncoid_monit.sh.epp", {
+      share_name => $share_name,
+      peer_host  => $peer_host
+    });
   }
 
 }
