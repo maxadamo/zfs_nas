@@ -11,7 +11,7 @@ class zfs_nas::firewall::nfs (
   $joined_array = join($clients_array)
   #$cleaned_array = regsubst($joined_array, /\((.+?)\)/, 'SEP', 'G')
   $_cleaned_array = regsubst($joined_array, /\,(.+?)\=@/, 'SEP', 'G')
-  $cleaned_array = regsubst($_cleaned_array, /^=@|\,.*$/, '')
+  $cleaned_array = regsubst($_cleaned_array, /^.*=@|\,.*$/, '')
 
   $ip_array = split($cleaned_array, 'SEP')
 
