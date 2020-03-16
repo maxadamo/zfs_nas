@@ -20,7 +20,7 @@ class zfs_nas::firewall::nfs (
   #echo { "clients_array: ${clients_array}":; }
   #echo { "joined_array: ${joined_array}":; }
   echo { "cleaned_array: ${cleaned_array}":; }
-  #echo { "ip_array: ${ip_array}":; }
+  echo { "ip_array: ${ip_array}":; }
 
   $nodes_ips = concat($nodes_ip4, $nodes_ip6)
   $peer_ip = delete($nodes_ip4, $::ipaddress)
