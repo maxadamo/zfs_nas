@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+PATH=/usr/bin:/usr/sbin:/bin:/usr/local/bin
+export PATH
+
+until ping -c 1 <%= $server %> &>/dev/null; do
+  true
+done
+
+if ls <%= $mount_point %> 2>&1 | grep -qi "stale file handle"; then
+  umount -l <%= $mount_point %>
+  mount <%= $mount_point %>
+fi
+
+grep -q "<%= $mount_point %>" /proc/mounts || mount <%= $mount_point %>
