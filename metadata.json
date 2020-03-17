@@ -1,6 +1,6 @@
 {
   "name": "maxadamo-zfs_nas",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Massimiliano Adamo <maxadamo@gmail.com>",
   "summary": "ZFS HA NAS: a Highly-Avalaible NAS Appliance",
   "license": "GPL-3.0",
@@ -14,12 +14,17 @@
     },
     {
       "name": "puppetlabs-firewall",
-      "version_requirement": ">= 1.9.0 <= 2.0.0"
+      "version_requirement": ">= 1.9.0 <= 2.2.0"
     },
     {
       "name": "puppetlabs-zfs_core",
       "version_requirement": ">= 1.0.0 <= 1.0.2"
+    },
+    {
+      "name": "soli/monit",
+      "version_requirement": ">= 2.0.0 < 2.0.1"
     }
+\
   ],
   "operatingsystem_support": [
     {
