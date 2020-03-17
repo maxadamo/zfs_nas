@@ -109,7 +109,6 @@ zfs_nas::client { '/test':
 
 ## Limitations
 
-* puppet will create ZFS filesystems on both hosts, but syncoid, pretends to create the filesystems for the first time on the slave. This is an odd situation that I cannot easily address. **You need to destroy the the filesystem on the slave for the first time only and let syncoid create them**. You'll see the errors in `/var/log/monit.log`. This is the command to destroy a filesystem: `zfs destroy -r zfs_nas/puppet`
 * sanoid package must be compiled following the instructions available here: [Install Sanoid](https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md)
 * there is no unit test available yet (you trust what I'm doing)
 
