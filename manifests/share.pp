@@ -12,7 +12,7 @@ define zfs_nas::share (
   $peer_host = delete($nodes_hostnames, $facts['fqdn'])
 
   if ($::zfs_master) {
-    notify { 'I am the master': }
+    notify { "I am the master ${share_name}": }
     zfs { "zfs_nas/${share_name}":
       ensure     => $ensure,
       mountpoint => "/zfs_nas/${share_name}",
@@ -20,7 +20,7 @@ define zfs_nas::share (
       require    => Class['nfs'];
     }
   } else {
-    notify { 'I am the slave': }
+    notify { "I am the slave ${share_name}": }
   }
 
   monit::check { "syncoid_${share_name}":
