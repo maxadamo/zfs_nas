@@ -34,7 +34,7 @@ I recommend to set a check interval between 15 and 60 seconds. Check interval in
 
 ### Beginning with zfs_nas
 
-Zfs_nas will will set cron jobs inside the file /etc/cron.d/zfs-auto-snapshot.
+Zfs_nas will will set cron jobs inside the file `/etc/cron.d/zfs-auto-snapshot`.
 
 Furthermore, every 15 seconds, syncoid will run on the slave, to pull data from the master.
 
