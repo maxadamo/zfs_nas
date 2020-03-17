@@ -65,5 +65,17 @@ class zfs_nas::keepalived (
     }
   }
 
+  file {
+    default:
+      ensure => present,
+      owner  => root,
+      group  => root,
+      mode   => '0755';
+    '/etc/keepalived/keepalived-down.sh':
+      source  => "puppet:///modules/${module_name}/keepalived-down.sh";
+    '/etc/keepalived/keepalived-up.sh':
+      source  => "puppet:///modules/${module_name}/keepalived-up.sh";
+  }
+
 }
 # vim:ts=2:sw=2
