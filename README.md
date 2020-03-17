@@ -23,8 +23,8 @@ Development is at an early stage: there are oddities described in the [Limitatio
 
 ### What zfs_nas affects
 
-You have an option to let this module configure monit, or configure monit yourself.
-I recommend to set a check interval between 15 and 60 seconds. Check interval in monit is called "cycle". We run our monit cheks every "1 cycles" (hence every 15 seconds)
+You have an option to let this module configure monit or you can configure monit yourself.
+I recommend to set a check interval between 15 and 60 seconds. Check interval in monit is called "cycle". We run our monit cheks every "1 cycles" (hence every 15 seconds). There are few modules available to configure monit. 
 
 ### Setup Requirements
 
@@ -34,8 +34,11 @@ I recommend to set a check interval between 15 and 60 seconds. Check interval in
 
 ### Beginning with zfs_nas
 
-You need to set the data
-The very basic steps needed for a user to get the module up and running. This can include setup steps, if necessary, or it can be an example of the most basic use of the module.
+Zfs_nas will will set cron jobs inside the file /etc/cron.d/zfs-auto-snapshot.
+
+Furthermore, every 15 seconds, syncoid will run on the slave, to pull data from the master.
+
+The zpool is created with the name `zfs_nas`. I don't see a reason to customize the name.
 
 ## Usage
 
@@ -106,9 +109,9 @@ zfs_nas::client { '/test':
 
 ## Limitations
 
-* puppet will create a zpool on both hosts, but syncoid, pretends to create the zpool for the first time on the slave. This is an odd situation that I cannot easily address. **You need to destroy the the zpools on the slave for the first time only and let syncoid create them**. You'll see the errors in `/var/log/monit.log`
+* puppet will create ZFS filesystems on both hosts, but syncoid, pretends to create the filesystems for the first time on the slave. This is an odd situation that I cannot easily address. **You need to destroy the the filesystem on the slave for the first time only and let syncoid create them**. You'll see the errors in `/var/log/monit.log`. This is the command to destroy a filesystem: `zfs destroy -r zfs_nas/puppet`
 * sanoid package must be compiled following the instructions available here: [Install Sanoid](https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md)
-* there is no unit test available yet (you truste what I'm doing)
+* there is no unit test available yet (you trust what I'm doing)
 
 ## Development
 

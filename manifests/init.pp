@@ -57,6 +57,7 @@ class zfs_nas (
     'present', 'absent', 'latest'
   ] $sanoid_ensure                             = present,
   Boolean $manage_monit                        = true,
+  Integer $monit_check_interval                = 15,
   Boolean $manage_sanoid                       = false,
   String $network_interface                    = 'eth0',
   Boolean $manage_firewall                     = true,
@@ -82,7 +83,7 @@ class zfs_nas (
     class { 'monit':
       manage_firewall => false,
       httpd           => true,
-      check_interval  => 15,
+      check_interval  => $monit_check_interval,
       httpd_allow     => 'localhost',
       httpd_user      => 'admin',
       httpd_password  => seeded_rand_string(10, $module_name),
