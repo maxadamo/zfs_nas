@@ -115,3 +115,7 @@ zfs_nas::client { '/test':
 ## Development
 
 Feel free to make pull requests and/or open issues on [Zfs Nas GitHub Repository](https://github.com/maxadamo/zfs_nas)
+
+## Release Notes/Contributors/Etc.
+
+The idea for this module originated from this post: [How to perform incremental / continuous backups of zfs pool?](https://serverfault.com/a/842740/312669)
