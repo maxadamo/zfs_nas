@@ -52,15 +52,15 @@ class zfs_nas (
   Hash $zfs_shares,
   Variant[Sensitive, String] $ssh_id_rsa,
   String $ssh_pub_key,
-  Array  $zfs_package                          = $zfs_nas::params::zfs_package,
-  Boolean $sanoid_ensure                       = present,
-  Boolean $manage_sanoid                       = false,
-  String $network_interface                    = 'eth0',
-  Boolean $manage_firewall                     = true,
-  Boolean $manage_repo                         = true,
-  Optional[String] $repo_proxy_host            = undef,
-  Optional[Integer[1, 65535]] $repo_proxy_port = undef,
-  Optional[Array] $mirrors                     = undef, # place holder
+  Array  $zfs_package                                  = $zfs_nas::params::zfs_package,
+  String['present', 'absent', 'latest'] $sanoid_ensure = present,
+  Boolean $manage_sanoid                               = false,
+  String $network_interface                            = 'eth0',
+  Boolean $manage_firewall                             = true,
+  Boolean $manage_repo                                 = true,
+  Optional[String] $repo_proxy_host                    = undef,
+  Optional[Integer[1, 65535]] $repo_proxy_port         = undef,
+  Optional[Array] $mirrors                             = undef, # place holder
 ) inherits zfs_nas::params {
 
   if $ssh_id_rsa =~ String {
