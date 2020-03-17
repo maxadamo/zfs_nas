@@ -24,7 +24,7 @@ Development is at an early stage: there are oddities described in the [Limitatio
 ### What zfs_nas affects
 
 You have an option to let this module configure monit or you can configure monit yourself.
-I recommend to set a check interval between 15 and 60 seconds. Check interval in monit is called "cycle". We run our monit cheks every "1 cycles" (hence every 15 seconds). There are few modules available to configure monit. 
+I recommend to set a check interval between 15 and 60 seconds. Check interval in monit is called "cycle". We run our monit cheks every "1 cycles" (hence every 15 seconds). There are few modules available to configure monit.
 
 ### Setup Requirements
 
