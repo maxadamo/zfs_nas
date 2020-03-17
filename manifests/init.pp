@@ -1,6 +1,6 @@
 # == Class: zfs_nas
 #
-# == temporary note:
+# == based on this post:
 #
 # https://serverfault.com/a/842740/312669
 #
@@ -11,6 +11,35 @@
 # if you have yumrepo and it set to purge unmanaged repositories,
 # please, set manage_repo to false and create the repository yourself
 #
+#
+# == Sanoid installation:
+#
+# there is no Sanoid package available. You need to build the package yourself: 
+# https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md
+#
+# == Params (examples)
+#
+# - nodes_hostnames:
+#   [host1.domain', 'host2.domain']
+#
+# - nodes_ip4:
+#   ['192.168.2.5', '192.168.2.6']
+#
+# - nodes_ip6:
+#   ['2001::....', '2001:....']
+#
+# - vip_ip4:
+#   '192.168.2.7'
+#
+# - vip_ip6:
+#   '2001::....'
+#
+# - vip_ip4_subnet:
+#   24
+# - vip_ip6_subnet:
+#   64
+#
+# == Author Massimiliano.adamo <maxadamo@gmail.com
 class zfs_nas (
   Array $nodes_hostnames,
   Array $nodes_ip4,
@@ -23,15 +52,15 @@ class zfs_nas (
   Hash $zfs_shares,
   Variant[Sensitive, String] $ssh_id_rsa,
   String $ssh_pub_key,
-  Array  $zfs_package,
-  Boolean $sanoid_ensure = present,
-  Boolean $manage_sanoid = false,
-  String $network_interface = 'eth0',
-  Boolean $manage_firewall = true,
-  Boolean $manage_repo = true,
-  Optional[String] $repo_proxy_host = undef,
+  Array  $zfs_package                          = $zfs_nas::params::zfs_package,
+  Boolean $sanoid_ensure                       = present,
+  Boolean $manage_sanoid                       = false,
+  String $network_interface                    = 'eth0',
+  Boolean $manage_firewall                     = true,
+  Boolean $manage_repo                         = true,
+  Optional[String] $repo_proxy_host            = undef,
   Optional[Integer[1, 65535]] $repo_proxy_port = undef,
-  Optional[Array] $mirrors = undef, # place holder
+  Optional[Array] $mirrors                     = undef, # place holder
 ) inherits zfs_nas::params {
 
   if $ssh_id_rsa =~ String {

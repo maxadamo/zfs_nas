@@ -17,9 +17,8 @@ The README template below provides a starting point with details about what info
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your module does and what kind of problems users can solve with it.
-
-This should be a fairly short description helps the user decide if your module is what they want.
+This modules sets up two servers sharing a filesystem through NFS (SMB is in the roadmap).
+The module is still at an early stage development.
 
 ## Setup
 
@@ -33,11 +32,14 @@ If there's more that they should know about, though, this is the place to mentio
 * Dependencies that your module automatically installs.
 * Warnings or other important notices.
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
-If your module requires anything extra before setting up (pluginsync enabled, another module, etc.), mention it here.
+* You need to setup monit, using this module: [monit](https://forge.puppet.com/soli/monit) and you need to set a check_interval of 15 seconds
+  check interval is monit is called "cycle". We run our monit cheks every "1 cycles" (every 15 seconds)
 
-If your most recent release breaks compatibility or requires particular steps for upgrading, you might want to include an additional "Upgrading" section here.
+* sanoid package is not available. It can be compiled following the instructions: [Install Sanoid](https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md)
+
+* zfs repositories and gpg key are needed in CentOS and I am using the package provided by zfs
 
 ### Beginning with zfs_nas
 
@@ -45,7 +47,35 @@ The very basic steps needed for a user to get the module up and running. This ca
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your users how to use your module to solve problems, and be sure to include code examples. Include three to five examples of the most important or common tasks a user can accomplish with your module. Show users how to accomplish more complex tasks that involve different types, classes, and functions working in tandem.
+### ZFS NAS server
+
+```puppet
+  $ssh_id_rsa = Sensitive(lookup('ssh_id_rsa'))
+
+  class { 'zfs_nas':
+    zfs_shares      => lookup('zfs_shares'),
+    pool_disks      => lookup('pool_disks'),
+    nodes_hostnames => lookup('nodes_hostnames'),
+    nodes_ip4       => lookup('nodes_ip4'),
+    nodes_ip6       => lookup('nodes_ip6'),
+    vip_ip4         => lookup('vip_ip4'),
+    vip_ip4_subnet  => lookup('vip_ip4_subnet'),
+    vip_ip6         => lookup('vip_ip6'),
+    vip_ip6_subnet  => lookup('vip_ip6_subnet'),
+    ssh_id_rsa      => $ssh_id_rsa,
+    ssh_pub_key     => lookup('ssh_pub_key');
+  }
+```
+
+### ZFS Nas client
+
+```puppet
+  zfs_nas::client { '/test':
+    ensure => present,
+    server => 'test-zfs.domain.org',   # this is the VIP of the cluster
+    share  => '/zfs_nas/test_influx';
+  }
+```
 
 ## Reference
 
