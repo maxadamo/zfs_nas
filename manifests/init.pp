@@ -39,7 +39,7 @@
 # - vip_ip6_subnet:
 #   64
 #
-# == Author Massimiliano.adamo <maxadamo@gmail.com>
+# == Author Massimiliano Adamo <maxadamo@gmail.com>
 #
 class zfs_nas (
   Array $nodes_hostnames,

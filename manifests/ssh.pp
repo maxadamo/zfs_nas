@@ -26,7 +26,7 @@ class zfs_nas::ssh (
     '/root/.ssh/id_rsa':
       content => $ssh_id_rsa.unwrap;
     '/root/.ssh/config':
-      content => "Host ${peer_host}\n  StrictHostKeyChecking no\n";
+      content => "Host ${peer_host[0]}\n  StrictHostKeyChecking no\n";
   }
 
 }
