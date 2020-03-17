@@ -2,7 +2,6 @@
 #
 #
 define zfs_nas::share (
-  $master_status,
   $ensure,
   $client_list,
   $nodes_hostnames,
@@ -12,7 +11,7 @@ define zfs_nas::share (
   $client_string = join($client_list, ',')
   $peer_host = delete($nodes_hostnames, $facts['fqdn'])
 
-  if ($master_status) {
+  if ($::zfs_master) {
     notify { 'I am the master': }
     zfs { "zfs_nas/${share_name}":
       ensure     => $ensure,

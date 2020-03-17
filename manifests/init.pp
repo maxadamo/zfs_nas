@@ -100,20 +100,14 @@ class zfs_nas (
     }
   }
 
-  if $::zfs_master {
-    notify { 'test': }
-  }
-
   class {
     'zfs_nas::firewall::cluster':
       nodes_ip4 => $nodes_ip4,
       nodes_ip6 => $nodes_ip6;
     'zfs_nas::firewall::nfs':
-      master_status => $::zfs_master,
-      zfs_shares    => $zfs_shares,
-      nodes_ip4     => $nodes_ip4,
-      nodes_ip6     => $nodes_ip6,
-      require       => Class['zfs_nas::keepalived'];
+      zfs_shares => $zfs_shares,
+      nodes_ip4  => $nodes_ip4,
+      nodes_ip6  => $nodes_ip6;
     'zfs_nas::ssh':
       ssh_id_rsa      => $ssh_id_rsa_wrap,
       ssh_pub_key     => $ssh_pub_key,
@@ -145,7 +139,8 @@ class zfs_nas (
     zfs_nas::share { $share:
       ensure          => $ensure,
       nodes_hostnames => $nodes_hostnames,
-      client_list     => $client_list;
+      client_list     => $client_list,
+      require         => Class['zfs_nas::keepalived'];
     }
   }
 
