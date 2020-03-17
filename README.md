@@ -1,9 +1,5 @@
 # zfs_nas
 
-Welcome to your new module. A short overview of the generated parts can be found in the PDK documentation at https://puppet.com/pdk/latest/pdk_generating_modules.html .
-
-The README template below provides a starting point with details about what information to include in your README.
-
 #### Table of Contents
 
 1. [Description](#description)
@@ -17,20 +13,33 @@ The README template below provides a starting point with details about what info
 
 ## Description
 
-This modules sets up two servers sharing a filesystem through NFS (SMB is in the roadmap).
-The module is still at an early stage development.
+This modules is the successor of the great [Tiny NAS](https://forge.puppet.com/maxadamo/tiny_nas) :-)
+In comparison with Tiny_NAS, it allows more load.
+
+The module sets up two servers sharing a filesystem through NFS (SMB is in the roadmap).
+It is still at an early stage development: there are oddities described in the "Limitations" section.
 
 ## Setup
 
-### What zfs_nas affects **OPTIONAL**
+### What zfs_nas affects
 
-If it's obvious what your module touches, you can skip this section. For example, folks can probably figure out that your mysql_instance module affects their MySQL instances.
+If you have monit already, you may need to reconfigure it, and use a check_interval of 15, or 30 (I'd recommend not more than 60).
 
-If there's more that they should know about, though, this is the place to mention:
+Something as following can be used:
 
-* Files, packages, services, or operations that the module will alter, impact, or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
+```puppet
+  class { 'monit':
+    manage_firewall => false,
+    httpd           => true,
+    check_interval  => 15,
+    httpd_allow     => 'localhost',
+    httpd_user      => 'admin',
+    httpd_password  => $mmonit_password,
+    mmonit_password => $mmonit_password;
+  }
+```
+
+Next version of the module will include better support for monit configuration, with differente scenarios.
 
 ### Setup Requirements
 
@@ -77,41 +86,13 @@ The very basic steps needed for a user to get the module up and running. This ca
   }
 ```
 
-## Reference
-
-This section is deprecated. Instead, add reference information to your code as Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your module. For details on how to add code comments and generate documentation with Strings, see the Puppet Strings [documentation](https://puppet.com/docs/puppet/latest/puppet_strings.html) and [style guide](https://puppet.com/docs/puppet/latest/puppet_strings_style.html)
-
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the root of your module directory and list out each of your module's classes, defined types, facts, functions, Puppet tasks, task plans, and resource types and providers, along with the parameters for each.
-
-For each element (class, defined type, function, and so on), list:
-
-  * The data type, if applicable.
-  * A description of what the element does.
-  * Valid values, if the data type doesn't make it obvious.
-  * Default value, if any.
-
-For example:
-
-```
-### `pet::cat`
-
-#### Parameters
-
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
-
 ## Limitations
 
-In the Limitations section, list any incompatibilities, known issues, or other warnings.
+* puppet will create a zpool on both hosts, but syncoid, pretends to create the zpool for the first time. This is an odd situation that I cannot easily address. **You need to destroy the the zpools on the slave for the first time only and let syncoid create them**. You'll see the errors in `/var/log/monit.log`
+* sanoid package must be compiled following the instructions available here: [Install Sanoid](https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md)
+* there is no unit test available yet
+* documentation lacking client setup information
 
 ## Development
 
-In the Development section, tell other users the ground rules for contributing to your project and how they should submit their work.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You can also add any additional sections you feel are necessary or important to include here. Please use the `## ` header.
+Feel free to make pull requests and/or open issues on [Zfs Nas GitHub Repository](https://github.com/maxadamo/zfs_nas)
