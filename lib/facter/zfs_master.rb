@@ -4,7 +4,7 @@ Facter.add(:zfs_master) do
       Facter::Core::Execution.execute('ip address show | grep -q secondary')
       true
     rescue Facter::Core::Execution::ExecutionFailure
-      undef
+      false
     end
   end
 end
