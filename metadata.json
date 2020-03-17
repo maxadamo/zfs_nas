@@ -5,6 +5,8 @@
   "summary": "ZFS HA NAS: a Highly-Avalaible NAS Appliance",
   "license": "GPL-3.0",
   "source": "https://github.com/maxadamo/zfs_nas",
+  "project_page": "https://github.com/maxadamo/zfs_nas",
+  "issues_url": "https://github.com/maxadamo/zfs_nas/issues",
   "dependencies": [
     {
       "name": "derdanne-nfs",
