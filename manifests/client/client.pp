@@ -26,14 +26,14 @@ define zfs_nas::client::client (
     });
   }
 
-  cron { $stripped_mount_point:
-    ensure  => $ensure,
-    command => "flock /tmp/fix_stale_mount.lock ${script_name}",
-    user    => 'root';
+  monit::check { $stripped_mount_point:
+    content => "check program ${stripped_mount_point} with path \"/usr/bin/flock /tmp/syncoid_${stripped_mount_point} ${script_name}\"
+    every 1 cycles
+    if status != 0 then alert\n";
   }
 
-  unless defined(Class['::nfs']) {
-    class { '::nfs':
+  unless defined(Class['nfs']) {
+    class { 'nfs':
       server_enabled => $nfs_server_enabled,
       client_enabled => true;
     }
