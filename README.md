@@ -17,7 +17,7 @@ This modules is the successor of the great [Tiny NAS](https://forge.puppet.com/m
 In comparison with Tiny_NAS, it allows the normal load that you'd expect from a NAS.
 
 The module sets up two servers sharing a filesystem through NFS (**SMB is a roadmap feature**).
-It is still at an early stage development: there are oddities described in the "Limitations" section.
+Development is at an early stage: there are oddities described in the [Limitations](#limitations) section.
 
 ## Setup
 
@@ -39,12 +39,11 @@ Something as following can be used:
   }
 ```
 
-Next version of the module will include better support for monit configuration, with differente scenarios.
+Next version of the module will include better support for monit configuration, with different scenarios.
 
 ### Setup Requirements
 
-* You need to setup monit, using this module: [monit](https://forge.puppet.com/soli/monit) and you need to set a check_interval of 15 seconds
-  check interval is monit is called "cycle". We run our monit cheks every "1 cycles" (every 15 seconds)
+* You need to setup monit, using this module: [monit](https://forge.puppet.com/soli/monit) and you need to set a check_interval of 15 seconds. Check interval in monit is called "cycle". We run our monit cheks every "1 cycles" (every 15 seconds).
 
 * sanoid package is not available. It can be compiled following the instructions: [Install Sanoid](https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md)
 
@@ -88,7 +87,7 @@ zfs_nas::client { '/test':
 
 ## Limitations
 
-* puppet will create a zpool on both hosts, but syncoid, pretends to create the zpool for the first time. This is an odd situation that I cannot easily address. **You need to destroy the the zpools on the slave for the first time only and let syncoid create them**. You'll see the errors in `/var/log/monit.log`
+* puppet will create a zpool on both hosts, but syncoid, pretends to create the zpool for the first time on the slave. This is an odd situation that I cannot easily address. **You need to destroy the the zpools on the slave for the first time only and let syncoid create them**. You'll see the errors in `/var/log/monit.log`
 * sanoid package must be compiled following the instructions available here: [Install Sanoid](https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md)
 * there is no unit test available yet
 
