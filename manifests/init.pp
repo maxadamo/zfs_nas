@@ -46,13 +46,13 @@ class zfs_nas (
   Array $nodes_ip4,
   Optional[Array] $nodes_ip6,
   Stdlib::IP::Address::V4::Nosubnet $vip_ip4,
-  Optional[Stdlib::IP::Address::V6::Nosubnet] $vip_ip6,
   Integer[0, 30] $vip_ip4_subnet,
-  Optional[Integer[0, 128]] $vip_ip6_subnet,
   Variant[String, Array] $pool_disks,
   Hash $zfs_shares,
   Variant[Sensitive, String] $ssh_id_rsa,
   String $ssh_pub_key,
+  Optional[Integer[0, 128]] $vip_ip6_subnet            = undef,
+  Optional[Stdlib::IP::Address::V6::Nosubnet] $vip_ip6 = undef,
   Enum[
     'present', 'absent', 'latest'
   ] $sanoid_ensure                             = present,
@@ -109,10 +109,11 @@ class zfs_nas (
       nodes_ip4 => $nodes_ip4,
       nodes_ip6 => $nodes_ip6;
     'zfs_nas::firewall::nfs':
-      #master_status => $::zfs_master,
+      master_status => $::zfs_master,
       zfs_shares    => $zfs_shares,
       nodes_ip4     => $nodes_ip4,
-      nodes_ip6     => $nodes_ip6;
+      nodes_ip6     => $nodes_ip6,
+      require       => Class['zfs_nas::keepalived'];
     'zfs_nas::ssh':
       ssh_id_rsa      => $ssh_id_rsa_wrap,
       ssh_pub_key     => $ssh_pub_key,
@@ -158,17 +159,15 @@ class zfs_nas (
     fail('$vip_ip6_subnet is set but $vip_ip6 is not set')
   }
 
-  if ($vip_ip6) {
-    class { 'zfs_nas::keepalived':
-      network_interface => $network_interface,
-      nodes_hostnames   => $nodes_hostnames,
-      nodes_ip4         => $nodes_ip4,
-      vip_ip4           => $vip_ip4,
-      vip_ip4_subnet    => $vip_ip4_subnet,
-      nodes_ip6         => $nodes_ip6,
-      vip_ip6           => $vip_ip6,
-      vip_ip6_subnet    => $vip_ip6_subnet;
-    }
+  class { 'zfs_nas::keepalived':
+    network_interface => $network_interface,
+    nodes_hostnames   => $nodes_hostnames,
+    nodes_ip4         => $nodes_ip4,
+    vip_ip4           => $vip_ip4,
+    vip_ip4_subnet    => $vip_ip4_subnet,
+    nodes_ip6         => $nodes_ip6,
+    vip_ip6           => $vip_ip6,
+    vip_ip6_subnet    => $vip_ip6_subnet;
   }
 
 }

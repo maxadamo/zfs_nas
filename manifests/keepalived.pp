@@ -23,6 +23,7 @@ class zfs_nas::keepalived (
   $peer_ip4 = delete($nodes_ip4, $::ipaddress)
   $_peer_host = delete($nodes_hostnames, [$::hostname, $::fqdn])
   $peer_host = regsubst($_peer_host, ".${::domain}", '')
+
   include ::keepalived
 
   keepalived::vrrp::script { 'check_nfs':

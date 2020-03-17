@@ -2,6 +2,7 @@
 #
 #
 define zfs_nas::share (
+  $master_status,
   $ensure,
   $client_list,
   $nodes_hostnames,
@@ -11,11 +12,16 @@ define zfs_nas::share (
   $client_string = join($client_list, ',')
   $peer_host = delete($nodes_hostnames, $facts['fqdn'])
 
-  zfs { "zfs_nas/${share_name}":
-    ensure     => $ensure,
-    mountpoint => "/zfs_nas/${share_name}",
-    sharenfs   => $client_string,
-    require    => Class['nfs'];
+  if ($master_status) {
+    notify { 'I am the master': }
+    zfs { "zfs_nas/${share_name}":
+      ensure     => $ensure,
+      mountpoint => "/zfs_nas/${share_name}",
+      sharenfs   => $client_string,
+      require    => Class['nfs'];
+    }
+  } else {
+    notify { 'I am the slave': }
   }
 
   monit::check { "syncoid_${share_name}":
