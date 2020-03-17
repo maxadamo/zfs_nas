@@ -52,8 +52,8 @@ class zfs_nas (
   Hash $zfs_shares,
   Variant[Sensitive, String] $ssh_id_rsa,
   String $ssh_pub_key,
-  String[Enum[
-    'present', 'absent', 'latest']
+  Enum[
+    'present', 'absent', 'latest'
   ] $sanoid_ensure                             = present,
   Array  $zfs_package                          = $zfs_nas::params::zfs_package,
   Boolean $manage_sanoid                       = false,
