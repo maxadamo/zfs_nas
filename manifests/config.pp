@@ -1,11 +1,14 @@
 # == Class: zfs_nas::config
 #
 #
-class zfs_nas::config (
-  $zfs_package,
-  $manage_sanoid,
-  $sanoid_ensure
-) {
+class zfs_nas::config ($manage_sanoid, $sanoid_ensure) {
+
+  $zfs_package = $facts['os']['name'] ? {
+    'Ubuntu' => [
+      'zfsutils-linux', 'zfs-auto-snapshot', 'libcapture-tiny-perl',
+      'debhelper', 'libconfig-inifiles-perl', 'pv', 'lzop', 'mbuffer'],
+    'CentOS' => ['zfs', 'zfs-auto-snapshot']
+  }
 
   class { 'nfs':
     server_enabled => true,

@@ -56,7 +56,7 @@ class zfs_nas (
   Enum[
     'present', 'absent', 'latest'
   ] $sanoid_ensure                             = present,
-  Array  $zfs_package                          = $zfs_nas::params::zfs_package,
+  Boolean $manage_monit                        = true,
   Boolean $manage_sanoid                       = false,
   String $network_interface                    = 'eth0',
   Boolean $manage_firewall                     = true,
@@ -64,7 +64,7 @@ class zfs_nas (
   Optional[String] $repo_proxy_host            = undef,
   Optional[Integer[1, 65535]] $repo_proxy_port = undef,
   Optional[Array] $mirrors                     = undef, # place holder
-) inherits zfs_nas::params {
+) {
 
   if $ssh_id_rsa =~ String {
     notify { '"monitor_password" String detected!':
@@ -73,6 +73,21 @@ class zfs_nas (
     $ssh_id_rsa_wrap = Sensitive($ssh_id_rsa)
   } else {
     $ssh_id_rsa_wrap = $ssh_id_rsa
+  }
+
+  if ($manage_monit) {
+    # this is a very basic monit setup
+    # you can create you own setup, setting manage_monit to false
+    # and adding you parameters of choice
+    class { 'monit':
+      manage_firewall => false,
+      httpd           => true,
+      check_interval  => 15,
+      httpd_allow     => 'localhost',
+      httpd_user      => 'admin',
+      httpd_password  => seeded_rand_string(10, $module_name),
+      mmonit_password => seeded_rand_string(10, $module_name);
+    }
   }
 
   if ($manage_repo) {
@@ -97,7 +112,6 @@ class zfs_nas (
       ssh_pub_key     => $ssh_pub_key,
       nodes_hostnames => $nodes_hostnames;
     'zfs_nas::config':
-      zfs_package   => $zfs_package,
       manage_sanoid => $manage_sanoid,
       sanoid_ensure => $sanoid_ensure;
   }

@@ -2,8 +2,8 @@
 #
 #
 class zfs_nas::repositories (
-  Optional[String] $repo_proxy_host  = undef,
-  Optional[Integer] $repo_proxy_port = undef
+  $repo_proxy_host = undef,
+  $repo_proxy_port = undef
 ) {
 
   if ($repo_proxy_host) and ($repo_proxy_port) {

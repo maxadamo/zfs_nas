@@ -1,11 +1,7 @@
 # Class: zfs_nas::ssh
 #
 #
-class zfs_nas::ssh (
-  $nodes_hostnames,
-  $ssh_id_rsa,
-  $ssh_pub_key
-) {
+class zfs_nas::ssh ($nodes_hostnames, $ssh_id_rsa, $ssh_pub_key) {
 
   $peer_host = delete($nodes_hostnames, $facts['fqdn'])
 
