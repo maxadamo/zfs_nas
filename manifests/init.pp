@@ -76,6 +76,10 @@ class zfs_nas (
     $ssh_id_rsa_wrap = $ssh_id_rsa
   }
 
+  if ($::zfs_master) {
+    notify { 'test':; }
+  }
+
   if ($manage_monit) {
     # this is a very basic monit setup
     # you can create you own setup, setting manage_monit to false
