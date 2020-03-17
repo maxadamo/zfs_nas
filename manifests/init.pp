@@ -100,7 +100,8 @@ class zfs_nas (
     }
   }
 
-  notify { 'test':
+  if $::zfs_master {
+    notify { 'test': }
   }
 
   class {
