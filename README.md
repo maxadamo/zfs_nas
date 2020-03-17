@@ -59,31 +59,31 @@ The very basic steps needed for a user to get the module up and running. This ca
 ### ZFS NAS server
 
 ```puppet
-  $ssh_id_rsa = Sensitive(lookup('ssh_id_rsa'))
+$ssh_id_rsa = Sensitive(lookup('ssh_id_rsa'))
 
-  class { 'zfs_nas':
-    zfs_shares      => lookup('zfs_shares'),
-    pool_disks      => lookup('pool_disks'),
-    nodes_hostnames => lookup('nodes_hostnames'),
-    nodes_ip4       => lookup('nodes_ip4'),
-    nodes_ip6       => lookup('nodes_ip6'),
-    vip_ip4         => lookup('vip_ip4'),
-    vip_ip4_subnet  => lookup('vip_ip4_subnet'),
-    vip_ip6         => lookup('vip_ip6'),
-    vip_ip6_subnet  => lookup('vip_ip6_subnet'),
-    ssh_id_rsa      => $ssh_id_rsa,
-    ssh_pub_key     => lookup('ssh_pub_key');
-  }
+class { 'zfs_nas':
+  zfs_shares      => lookup('zfs_shares'),
+  pool_disks      => lookup('pool_disks'),
+  nodes_hostnames => lookup('nodes_hostnames'),
+  nodes_ip4       => lookup('nodes_ip4'),
+  nodes_ip6       => lookup('nodes_ip6'),
+  vip_ip4         => lookup('vip_ip4'),
+  vip_ip4_subnet  => lookup('vip_ip4_subnet'),
+  vip_ip6         => lookup('vip_ip6'),
+  vip_ip6_subnet  => lookup('vip_ip6_subnet'),
+  ssh_id_rsa      => $ssh_id_rsa,
+  ssh_pub_key     => lookup('ssh_pub_key');
+}
 ```
 
 ### ZFS Nas client
 
 ```puppet
-  zfs_nas::client { '/test':
-    ensure => present,
-    server => 'test-zfs.domain.org',   # this is the VIP of the cluster
-    share  => '/zfs_nas/test_influx';
-  }
+zfs_nas::client { '/test':
+  ensure => present,
+  server => 'test-zfs.domain.org',   # this is the VIP of the cluster
+  share  => '/zfs_nas/test_influx';
+}
 ```
 
 ## Limitations
@@ -91,7 +91,6 @@ The very basic steps needed for a user to get the module up and running. This ca
 * puppet will create a zpool on both hosts, but syncoid, pretends to create the zpool for the first time. This is an odd situation that I cannot easily address. **You need to destroy the the zpools on the slave for the first time only and let syncoid create them**. You'll see the errors in `/var/log/monit.log`
 * sanoid package must be compiled following the instructions available here: [Install Sanoid](https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md)
 * there is no unit test available yet
-* documentation lacking client setup information
 
 ## Development
 
