@@ -23,39 +23,58 @@ Development is at an early stage: there are oddities described in the [Limitatio
 
 ### What zfs_nas affects
 
-If you have monit already, you may need to reconfigure it, and use a check_interval of 15, or 30 (I'd recommend not more than 60).
-
-Something as following can be used:
-
-```puppet
-  class { 'monit':
-    manage_firewall => false,
-    httpd           => true,
-    check_interval  => 15,
-    httpd_allow     => 'localhost',
-    httpd_user      => 'admin',
-    httpd_password  => $mmonit_password,
-    mmonit_password => $mmonit_password;
-  }
-```
-
-Next version of the module will include better support for monit configuration, with different scenarios.
+You have an option to let this module configure monit, or configure monit yourself.
+I recommend to set a check interval between 15 and 60 seconds. Check interval in monit is called "cycle". We run our monit cheks every "1 cycles" (hence every 15 seconds)
 
 ### Setup Requirements
 
-* You need to setup monit, using this module: [monit](https://forge.puppet.com/soli/monit) and you need to set a check_interval of 15 seconds. Check interval in monit is called "cycle". We run our monit cheks every "1 cycles" (every 15 seconds).
-
 * sanoid package is not available. It can be compiled following the instructions: [Install Sanoid](https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md)
 
-* zfs repositories and gpg key are needed in CentOS and I am using the package provided by zfs
+* zfs repositories and gpg key are needed in CentOS (I haven't tested CentOS 8 yet) and I am using the package provided by zfs
 
 ### Beginning with zfs_nas
 
+You need to set the data
 The very basic steps needed for a user to get the module up and running. This can include setup steps, if necessary, or it can be an example of the most basic use of the module.
 
 ## Usage
 
 ### ZFS NAS server
+
+In hiera you could have something as following:
+
+```yaml
+---
+nodes_hostnames:
+  - "test-zfs01.domain.org"
+  - "test-zfs02.domain.org"
+nodes_ip4:
+  - '192.168.2.92'
+  - '192.168.2.93'
+nodes_ip6:
+  - '2001:.....:233'
+  - '2001:.....:234'
+vip_ip4: '192.168.2.94'
+vip_ip4_subnet: 22
+vip_ip6: '2001:.....:235'
+vip_ip6_subnet: 64
+pool_disks: 'sdb'
+zfs_shares:
+  academy:
+    ensure: present
+    client_list:
+      - 'rw=@192.168.2.24,sec=insecure,async,no_root_squash,no_subtree_check'
+      - 'rw=@192.168.2.25,sec=insecure,async,no_root_squash,no_subtree_check'
+      - 'rw=@2001.....12c,sec=,insecure,async,no_root_squash,no_subtree_check'
+      - 'rw=@2001.....12d,sec=insecure,async,no_root_squash,no_subtree_check'
+ssh_pub_key: 'AAAAB3N.......zNTg/NjqJ'
+ssh_id_rsa: >
+    ENC[PKCS7,Mblahblahblah....
+    ...
+    kjhkhkh]
+```
+
+And you call the module as following:
 
 ```puppet
 $ssh_id_rsa = Sensitive(lookup('ssh_id_rsa'))
@@ -89,7 +108,7 @@ zfs_nas::client { '/test':
 
 * puppet will create a zpool on both hosts, but syncoid, pretends to create the zpool for the first time on the slave. This is an odd situation that I cannot easily address. **You need to destroy the the zpools on the slave for the first time only and let syncoid create them**. You'll see the errors in `/var/log/monit.log`
 * sanoid package must be compiled following the instructions available here: [Install Sanoid](https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md)
-* there is no unit test available yet
+* there is no unit test available yet (you truste what I'm doing)
 
 ## Development
 
