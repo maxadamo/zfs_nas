@@ -1,10 +1,12 @@
 Facter.add(:zfs_master) do
   setcode do
     begin
-      Facter::Core::Execution.execute('ip address show | grep -q secondary')
-      true
-    rescue Facter::Core::Execution::ExecutionFailure
-      false
+      master_status = Facter.value('ip address show | grep -q secondary').instance_eval do 
+      case master_status
+      when ""
+        false
+      else
+        true
     end
   end
 end
