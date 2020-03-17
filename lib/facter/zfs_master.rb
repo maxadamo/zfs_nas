@@ -1,4 +1,4 @@
-Facter.add(:sleep) do
+Facter.add(:zfs_master) do
   setcode do
     begin
       Facter::Core::Execution.execute('ip address show | grep secondary')
