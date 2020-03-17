@@ -76,10 +76,6 @@ class zfs_nas (
     $ssh_id_rsa_wrap = $ssh_id_rsa
   }
 
-  if ($::zfs_master) {
-    notify { 'test':; }
-  }
-
   if ($manage_monit) {
     # this is a very basic monit setup
     # you can create you own setup, setting manage_monit to false
@@ -109,9 +105,10 @@ class zfs_nas (
       nodes_ip4 => $nodes_ip4,
       nodes_ip6 => $nodes_ip6;
     'zfs_nas::firewall::nfs':
-      zfs_shares => $zfs_shares,
-      nodes_ip4  => $nodes_ip4,
-      nodes_ip6  => $nodes_ip6;
+      #master_status => $::zfs_master,
+      zfs_shares    => $zfs_shares,
+      nodes_ip4     => $nodes_ip4,
+      nodes_ip6     => $nodes_ip6;
     'zfs_nas::ssh':
       ssh_id_rsa      => $ssh_id_rsa_wrap,
       ssh_pub_key     => $ssh_pub_key,
