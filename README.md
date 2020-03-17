@@ -14,9 +14,9 @@
 ## Description
 
 This modules is the successor of the great [Tiny NAS](https://forge.puppet.com/maxadamo/tiny_nas) :-)
-In comparison with Tiny_NAS, it allows more load.
+In comparison with Tiny_NAS, it allows the normal load that you'd expect from a NAS.
 
-The module sets up two servers sharing a filesystem through NFS (SMB is in the roadmap).
+The module sets up two servers sharing a filesystem through NFS (**SMB is a roadmap feature**).
 It is still at an early stage development: there are oddities described in the "Limitations" section.
 
 ## Setup
