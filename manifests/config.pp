@@ -2,7 +2,9 @@
 #
 #
 class zfs_nas::config (
-  $zfs_package = $zfs_nas::params::zfs_package,
+  $zfs_package,
+  $manage_sanoid,
+  $sanoid_ensure
 ) {
 
   class { 'nfs':
@@ -28,6 +30,11 @@ class zfs_nas::config (
   }
 
   package { $zfs_package: ensure  => installed; }
+  if ($manage_sanoid) {
+    package { 'sanoid':
+      ensure => $sanoid_ensure
+    }
+  }
 
   file {
     '/etc/modprobe.d/zfs':

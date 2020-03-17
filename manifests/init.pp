@@ -21,6 +21,11 @@ class zfs_nas (
   Optional[Integer[0, 128]] $vip_ip6_subnet,
   Variant[String, Array] $pool_disks,
   Hash $zfs_shares,
+  Variant[Sensitive, String] $ssh_id_rsa,
+  String $ssh_pub_key,
+  Array  $zfs_package,
+  Boolean $sanoid_ensure = present,
+  Boolean $manage_sanoid = false,
   String $network_interface = 'eth0',
   Boolean $manage_firewall = true,
   Boolean $manage_repo = true,
@@ -29,7 +34,14 @@ class zfs_nas (
   Optional[Array] $mirrors = undef, # place holder
 ) inherits zfs_nas::params {
 
-  include zfs_nas::config
+  if $ssh_id_rsa =~ String {
+    notify { '"monitor_password" String detected!':
+      message => 'It is advisable to use the Sensitive datatype for "monitor_password"';
+    }
+    $ssh_id_rsa_wrap = Sensitive($ssh_id_rsa)
+  } else {
+    $ssh_id_rsa_wrap = $ssh_id_rsa
+  }
 
   if ($manage_repo) {
     if $facts['lsbdistid'] == 'CentOS' {
@@ -38,6 +50,24 @@ class zfs_nas (
         repo_proxy_port => $repo_proxy_port
       }
     }
+  }
+
+  class {
+    'zfs_nas::firewall::cluster':
+      nodes_ip4 => $nodes_ip4,
+      nodes_ip6 => $nodes_ip6;
+    'zfs_nas::firewall::nfs':
+      zfs_shares => $zfs_shares,
+      nodes_ip4  => $nodes_ip4,
+      nodes_ip6  => $nodes_ip6;
+    'zfs_nas::ssh':
+      ssh_id_rsa      => $ssh_id_rsa_wrap,
+      ssh_pub_key     => $ssh_pub_key,
+      nodes_hostnames => $nodes_hostnames;
+    'zfs_nas::config':
+      zfs_package   => $zfs_package,
+      manage_sanoid => $manage_sanoid,
+      sanoid_ensure => $sanoid_ensure;
   }
 
   # we handle only one default pool (I see no reason to make it customizable)
@@ -87,16 +117,6 @@ class zfs_nas (
       vip_ip6           => $vip_ip6,
       vip_ip6_subnet    => $vip_ip6_subnet;
     }
-  }
-
-  class {
-    'zfs_nas::firewall::cluster':
-      nodes_ip4 => $nodes_ip4,
-      nodes_ip6 => $nodes_ip6;
-    'zfs_nas::firewall::nfs':
-      zfs_shares => $zfs_shares,
-      nodes_ip4  => $nodes_ip4,
-      nodes_ip6  => $nodes_ip6;
   }
 
 }
