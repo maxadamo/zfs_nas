@@ -100,6 +100,9 @@ class zfs_nas (
     }
   }
 
+  notify { 'test':
+  }
+
   class {
     'zfs_nas::firewall::cluster':
       nodes_ip4 => $nodes_ip4,
