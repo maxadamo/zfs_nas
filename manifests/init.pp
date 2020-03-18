@@ -111,10 +111,9 @@ class zfs_nas (
       nodes_ip4  => $nodes_ip4,
       nodes_ip6  => $nodes_ip6;
     'zfs_nas::ssh':
-      peer_fqdn       => $peer_fqdn,
-      ssh_id_rsa      => $ssh_id_rsa_wrap,
-      ssh_pub_key     => $ssh_pub_key,
-      nodes_hostnames => $nodes_hostnames;
+      peer_fqdn   => $peer_fqdn,
+      ssh_id_rsa  => $ssh_id_rsa_wrap,
+      ssh_pub_key => $ssh_pub_key;
     'zfs_nas::config':
       manage_sanoid => $manage_sanoid,
       sanoid_ensure => $sanoid_ensure;
