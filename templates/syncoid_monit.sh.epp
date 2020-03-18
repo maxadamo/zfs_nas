@@ -4,4 +4,4 @@ PATH="/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
 ip address show | grep -q secondary && exit 0
 
 # The error output could be used by monitoring
-flock /tmp/syncoid_<%= $share_name %> syncoid --quiet root@<%= $peer_host[0] %>:zfs_nas/<%= $share_name %> zfs_nas/<%= $share_name %> || echo "ERROR synchronizing <%= $share_name %>"
+flock /tmp/syncoid_<%= $share_name %> syncoid --quiet root@<%= $peer_fqdn[0] %>:zfs_nas/<%= $share_name %> zfs_nas/<%= $share_name %> || echo "ERROR synchronizing <%= $share_name %>"

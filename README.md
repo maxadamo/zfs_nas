@@ -110,6 +110,7 @@ zfs_nas::client { '/test':
 ## Limitations
 
 * sanoid package must be compiled following the instructions available here: [Install Sanoid](https://github.com/jimsalterjrs/sanoid/blob/master/INSTALL.md)
+* repositories are only needed for CentOS, and they are not handled properly (I didn't find a place to fetch the GPG key): this module will install the repository through the package provided by _zfsonlinux_
 * there is no unit test available yet (you trust what I'm doing)
 
 ## Development

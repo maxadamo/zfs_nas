@@ -4,12 +4,11 @@
 define zfs_nas::share (
   $ensure,
   $client_list,
-  $nodes_hostnames,
+  $peer_fqdn,
   $share_name = $name,
 ) {
 
   $client_string = join($client_list, ',')
-  $peer_host = delete($nodes_hostnames, $facts['fqdn'])
 
   if ($::zfs_master) {
     zfs { "zfs_nas/${share_name}":
@@ -33,7 +32,7 @@ define zfs_nas::share (
     group   => root,
     content => epp("${module_name}/syncoid_monit.sh.epp", {
       share_name => $share_name,
-      peer_host  => $peer_host
+      peer_fqdn  => $peer_fqdn
     });
   }
 

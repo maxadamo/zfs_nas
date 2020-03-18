@@ -1,9 +1,7 @@
 # Class: zfs_nas::ssh
 #
 #
-class zfs_nas::ssh ($nodes_hostnames, $ssh_id_rsa, $ssh_pub_key) {
-
-  $peer_host = delete($nodes_hostnames, $facts['fqdn'])
+class zfs_nas::ssh ($peer_fqdn, $ssh_id_rsa, $ssh_pub_key) {
 
   ssh_authorized_key { 'syncoid':
     ensure => present,
@@ -22,7 +20,7 @@ class zfs_nas::ssh ($nodes_hostnames, $ssh_id_rsa, $ssh_pub_key) {
     '/root/.ssh/id_rsa':
       content => $ssh_id_rsa.unwrap;
     '/root/.ssh/config':
-      content => "Host ${peer_host[0]}\n  StrictHostKeyChecking no\n";
+      content => "Host ${peer_fqdn[0]}\n  StrictHostKeyChecking no\n";
   }
 
 }

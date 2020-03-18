@@ -67,6 +67,8 @@ class zfs_nas (
   Optional[Array] $mirrors                     = undef, # place holder
 ) {
 
+  $peer_fqdn = delete($nodes_hostnames, $facts['fqdn'])
+
   if $ssh_id_rsa =~ String {
     notify { '"monitor_password" String detected!':
       message => 'It is advisable to use the Sensitive datatype for "monitor_password"';
@@ -109,6 +111,7 @@ class zfs_nas (
       nodes_ip4  => $nodes_ip4,
       nodes_ip6  => $nodes_ip6;
     'zfs_nas::ssh':
+      peer_fqdn       => $peer_fqdn,
       ssh_id_rsa      => $ssh_id_rsa_wrap,
       ssh_pub_key     => $ssh_pub_key,
       nodes_hostnames => $nodes_hostnames;
@@ -162,6 +165,7 @@ class zfs_nas (
     vip_ip4_subnet    => $vip_ip4_subnet,
     nodes_ip6         => $nodes_ip6,
     vip_ip6           => $vip_ip6,
+    zfs_shares        => $zfs_shares,
     vip_ip6_subnet    => $vip_ip6_subnet;
   }
 

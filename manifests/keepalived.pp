@@ -3,9 +3,11 @@
 class zfs_nas::keepalived (
   $network_interface,
   $nodes_hostnames,
+  $peer_fqdn,
   $nodes_ip4,
   $vip_ip4,
   $vip_ip4_subnet,
+  $zfs_shares,
   $nodes_ip6 = [],
   $vip_ip6 = undef,
   $vip_ip6_subnet = undef,
@@ -21,8 +23,7 @@ class zfs_nas::keepalived (
   }
 
   $peer_ip4 = delete($nodes_ip4, $::ipaddress)
-  $_peer_host = delete($nodes_hostnames, [$::hostname, $::fqdn])
-  $peer_host = regsubst($_peer_host, ".${::domain}", '')
+  $zfs_share_list = join(keys($zfs_shares), ' ')
 
   include ::keepalived
 
@@ -75,7 +76,10 @@ class zfs_nas::keepalived (
     '/etc/keepalived/keepalived-down.sh':
       source  => "puppet:///modules/${module_name}/keepalived-down.sh";
     '/etc/keepalived/keepalived-up.sh':
-      source  => "puppet:///modules/${module_name}/keepalived-up.sh";
+      source  => epp("${module_name}/keepalived-up.sh.epp", {
+        zfs_share_list => $zfs_share_list,
+        peer_fqdn      => $peer_fqdn
+      });
   }
 
 }
