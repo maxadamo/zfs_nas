@@ -2,5 +2,26 @@
 # See https://github.com/puppetlabs/puppetlabs_spec_helper#using-fixtures for details
 ---
 fixtures:
+  repositories:
+    facts: 'https://github.com/puppetlabs/puppetlabs-facts.git'
+    provision: 'https://github.com/puppetlabs/provision.git'
+    puppet_agent: 'https://github.com/puppetlabs/puppetlabs-puppet_agent.git'
+    registry: 'https://github.com/puppetlabs/puppetlabs-registry.git'
+    translate: 'https://github.com/puppetlabs/puppetlabs-translate.git'
+    stdlib: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
+  symlinks:
+    motd: "#{source_dir}"
   forge_modules:
-#     stdlib: "puppetlabs/stdlib"
+    zfs_core:
+      repo: 'puppetlabs/zfs_core'
+      ref: '1.0.2'
+    firewall:
+      repo: 'puppetlabs/firewall'
+      ref: '2.2.0'
+    nfs:
+      repo: 'derdanne/nfs'
+      ref: '2.1.2'
+    monit:
+      repo: 'soli/monit'
+      ref: '2.0.1'
+
