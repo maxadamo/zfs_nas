@@ -73,9 +73,9 @@ class zfs_nas::keepalived (
       group  => root,
       mode   => '0755';
     '/etc/keepalived/keepalived-down.sh':
-      source  => "puppet:///modules/${module_name}/keepalived-down.sh";
+      source => "puppet:///modules/${module_name}/keepalived-down.sh";
     '/etc/keepalived/keepalived-up.sh':
-      source  => epp("${module_name}/keepalived-up.sh.epp", {
+      content => epp("${module_name}/keepalived-up.sh.epp", {
         zfs_share_list => $zfs_share_list,
         peer_fqdn      => $peer_fqdn
       });
