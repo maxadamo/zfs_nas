@@ -158,7 +158,7 @@ class zfs_nas (
 
   class { 'zfs_nas::keepalived':
     network_interface => $network_interface,
-    nodes_hostnames   => $nodes_hostnames,
+    peer_fqdn         => $peer_fqdn,
     nodes_ip4         => $nodes_ip4,
     vip_ip4           => $vip_ip4,
     vip_ip4_subnet    => $vip_ip4_subnet,

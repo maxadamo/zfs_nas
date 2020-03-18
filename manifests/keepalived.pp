@@ -2,7 +2,6 @@
 #
 class zfs_nas::keepalived (
   $network_interface,
-  $nodes_hostnames,
   $peer_fqdn,
   $nodes_ip4,
   $vip_ip4,
